@@ -19,9 +19,9 @@
         
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Merchants</h3>
+                <h3 class="box-title">Vendedores</h3>
                 <div class="pull-right">
-                    <a href="{{ url(config('unipay.route.merchant.name', 'merchants'), 'create') }}" class="btn btn-sm btn-success">Create New</a>
+                    <a href="{{ url(config('unipay.route.merchant.name', 'merchants'), 'create') }}" class="btn btn-sm btn-success">Criar novo</a>
                 </div>
             </div>
             
@@ -31,22 +31,21 @@
                     <tbody>
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Account ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Account Type</th>
                             <th style="width: 15%">Action</th>
                         </tr>
                         <tr>
-                            @foreach ($merchants as $gateway)
-                                <td>{{ $gateway->id }}</td>
-                                <td>{{ $gateway->name }}</td>
-                                <td>{{ $gateway->description }}</td>
-                                <td>{{ $gateway->account_id }}</td>
+                            @foreach ($merchants as $merchant)
+                                <td>{{ $merchant->id }}</td>
+                                <td>{{ $merchant->first_name . ' ' . $merchant->last_name }}</td>
+                                <td>{{ $merchant->email }}</td>
+                                <td>{{ $merchant->gateway->name }}</td>
                                 <td>
-                                    <a href="{{ url(config('unipay.routes.gateway.name', 'merchants'), $gateway->id . '/edit') }}" class="btn btn-primary">
+                                    <a href="{{ url(config('unipay.routes.merchant.name', 'merchants') . '/'. $merchant->id . '/edit') }}" class="btn btn-primary">
                                         <i class="fa fa-search"></i>
-                                    </a>
-                                    
+                                    </a>                                    
                                 </td>
                             @endforeach
                             

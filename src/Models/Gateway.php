@@ -24,7 +24,7 @@ class Gateway extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'account_id'
+        'name', 'description', 'username', 'password', 'account_id'
     ];
 
     /**

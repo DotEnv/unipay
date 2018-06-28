@@ -39,6 +39,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label">Usuário</label>
+                        <input type="text" name="username" value="{{ old('username') }}" class="form-control" placeholder="Define a gateway payment name." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Senha</label>
+                        <input type="text" name="password" value="{{ old('password') }}" class="form-control" placeholder="Define a gateway payment name." />
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label">Account ID</label>
                         <input type="text" name="account_id" value="{{ old('account_id') }}" class="form-control" placeholder="Define a gateway payment account id." />
                     </div>

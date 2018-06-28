@@ -13,11 +13,16 @@ namespace DotEnv\UniPay\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use GuzzleHttp\Client;
+
 use DotEnv\UniPay\Repositories\GatewayRepository;
 use DotEnv\UniPay\Contracts\GatewayRepository as GatewayRepositoryContract;
 
 use DotEnv\UniPay\Repositories\MerchantRepository;
 use DotEnv\UniPay\Contracts\MerchantRepository as MerchantRepositoryContract;
+
+use DotEnv\UniPay\Repositories\ZoopWSRepository;
+use DotEnv\UniPay\Contracts\GatewayWSRepository;
 
 use DotEnv\UniPay\UniPay;
 
@@ -78,12 +83,18 @@ class UniPayServiceProvider extends ServiceProvider
             GatewayRepository::class
         );
 
-        /**
-         * Bind repositories
-         */
         $this->app->bind(
             MerchantRepositoryContract::class,
             MerchantRepository::class
-        );        
+        );
+
+        $this->app->bind(GatewayWSRepository::class, function($app) {
+            
+            $guzzle = new Client([
+                'base_uri'       => 'https://api.zoop.ws/v1/marketplaces/2f9b466125ca4af3b33cb64e282caead/',
+            ]);
+
+            return new ZoopWSRepository($guzzle, 'zpk_test_vBt3doR7ilwFaoyHhzrAfhbg');
+        });
     }
 }

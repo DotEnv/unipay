@@ -113,6 +113,8 @@ class GatewayController extends Controller
     {
         $rules = [
             'name'       => 'required|max:50',
+            'username'   => 'ax:100',
+            'password'   => 'max:100',
             'account_id' => 'max:70'
         ];
         

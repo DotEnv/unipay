@@ -36,8 +36,8 @@
                             <th>Account ID</th>
                             <th style="width: 15%">Action</th>
                         </tr>
-                        <tr>
-                            @foreach ($gateways as $gateway)
+                        @foreach ($gateways as $gateway)
+                            <tr>
                                 <td>{{ $gateway->id }}</td>
                                 <td>{{ $gateway->name }}</td>
                                 <td>{{ $gateway->description }}</td>
@@ -45,12 +45,10 @@
                                 <td>
                                     <a href="{{ url(config('unipay.routes.gateway.name', 'gateways'), $gateway->id . '/edit') }}" class="btn btn-primary">
                                         <i class="fa fa-search"></i>
-                                    </a>
-                                    
-                                </td>
-                            @endforeach
-                            
-                        </tr>
+                                    </a>    
+                                </td>                            
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 

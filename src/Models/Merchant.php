@@ -13,6 +13,7 @@ namespace DotEnv\UniPay\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DotEnv\UniPay\Models\Gateway;
 
 class Merchant extends Model
 {
@@ -24,11 +25,7 @@ class Merchant extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'birth', 'cpf',
-        'state_id', 'city', 'postal', 'neighborhood', 'address', 'number', 'complement', 'reference',
-        'company', 'social_name', 'cnpj', 'opened_at', 'company_phone', 
-        'company_state_id', 'company_city', 'company_cep', 'company_neighborhood', 'company_address', 'company_number',
-        'company_complement', 'company_site',
+        'first_name', 'last_name', 'email', 'fields', 'type', 'reference', 'gateway_id'
     ];
 
     /**
@@ -39,4 +36,42 @@ class Merchant extends Model
     protected $dates = [
         'opened_at', 'created_at', 'updated_at', 'deleted_at'
     ];
+
+    /**
+     * Casteable attributes
+     * 
+     * @var array
+     */
+    protected $casts = [
+        'fields' => 'array'
+    ];
+
+    /**
+     * Appendeable fields
+     *
+     * @var array
+     */
+    protected $appends = [
+        'seeFields'
+    ];
+
+    /**
+     * Belongs to relationship
+     *
+     * @return Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function gateway()
+    {
+        return $this->belongsTo(Gateway::class);
+    }
+   
+    /**
+     * See fields attribute
+     *
+     * @return void
+     */
+    public function getSeeFieldsAttribute()
+    {
+        return json_decode($this->attributes['fields']);    
+    }
 }

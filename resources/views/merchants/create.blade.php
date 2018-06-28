@@ -7,7 +7,7 @@
         
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">New Merchant</h3>
+                <h3 class="box-title">Novo Vendedor</h3>
             </div>
             
             <div class="box-body">
@@ -27,72 +27,85 @@
                 <form method="POST" action="{{ url(config('unipay.route.merchant', 'merchants')) }}">
 
                     {!! csrf_field() !!}
+
+                    <div class="form-group">
+                        <label class="control-label">Payment Gateway</label>
+                        <select name="gateway_id" class="form-control">
+                            <option value="">--SELECT--</option>
+                            @foreach ($gateways as $gateway)
+                                <option value="{{ $gateway->id }}" @if(old('gateway_id')) selected="selected" @endif >{{ $gateway->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                
                     <div class="form-group">
                         <label class="control-label">Nome</label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[first_name]" value="{{ old('person.first_name') }}" class="form-control" placeholder="" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Sobrenome</label>
+                        <input type="text" name="person[last_name]" value="{{ old('person.last_name') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">E-mail</label>
-                        <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="" />
+                        <input type="email" name="person[email]" value="{{ old('person.email') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Telefone</label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[phone]" value="{{ old('person.phone') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Data de Nascimento</label>
-                        <input type="date" name="birth" value="{{ old('birth') }}" class="form-control" placeholder="" />
+                        <input type="date" name="person[birth]" value="{{ old('person.birth') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">CPF</label>
-                        <input type="text" name="cpf" value="{{ old('cpf') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[cpf]" value="{{ old('person.cpf') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Estado</label>
-                        <select id="state_id" name="state_id" class="form-control">
-                            <option>--SELECIONE--</option>
-                        </select>
+                        <input type="text" name="person[state]" value="{{ old('person.state') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Cidade</label>
-                        <input type="text" name="city" value="{{ old('city') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[city]" value="{{ old('person.city') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">CEP</label>
-                        <input type="text" name="postal" value="{{ old('postal') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[postal]" value="{{ old('person.postal') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Bairro</label>
-                        <input type="text" name="neighborhood" value="{{ old('neighborhood') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[neighborhood]" value="{{ old('person.neighborhood') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Logradouro</label>
-                        <input type="text" name="address" value="{{ old('address') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[address]" value="{{ old('person.address') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Número</label>
-                        <input type="text" name="number" value="{{ old('number') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[number]" value="{{ old('person.number') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Complemento</label>
-                        <input type="text" name="complement" value="{{ old('complement') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[complement]" value="{{ old('person.complement') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Referência</label>
-                        <input type="text" name="reference" value="{{ old('reference') }}" class="form-control" placeholder="" />
+                        <input type="text" name="person[reference]" value="{{ old('person.reference') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="row col-lg-12">
@@ -102,69 +115,67 @@
 
                     <div class="form-group">
                         <label class="control-label">Nome da Empresa</label>
-                        <input type="text" name="company_name" value="{{ old('company_name') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[name]" value="{{ old('company.name') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Razão Social</label>
-                        <input type="text" name="social_name" value="{{ old('social_name') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[social_name]" value="{{ old('company.social_name') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">CNPJ</label>
-                        <input type="text" name="cnpj" value="{{ old('cnpj') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[cnpj]" value="{{ old('company.cnpj') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Data de Abertura</label>
-                        <input type="date" name="opened_at" value="{{ old('opened_at') }}" class="form-control" placeholder="" />
+                        <input type="date" name="company[opened_at]" value="{{ old('company.opened_at') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Telefone</label>
-                        <input type="text" name="company_phone" value="{{ old('company_phone') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[phone]" value="{{ old('company.phone') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Estado</label>
-                        <select id="company_state_id" name="company_state_id" class="form-control">
-                            <option value="">--SELECIONE--</option>
-                        </select>
+                        <input type="text" name="company[state]" value="{{ old('company.state') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Cidade</label>
-                        <input type="text" name="company_city" value="{{ old('company_city') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[city]" value="{{ old('company.city') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">CEP</label>
-                        <input type="text" name="company_postal" value="{{ old('company_postal') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[postal]" value="{{ old('company.postal') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Bairro</label>
-                        <input type="text" name="company_neighborhood" value="{{ old('company_neighborhood') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[neighborhood]" value="{{ old('company.neighborhood') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Logradouro</label>
-                        <input type="text" name="company_address" value="{{ old('company_address') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[address]" value="{{ old('company.address') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Número</label>
-                        <input type="text" name="company_number" value="{{ old('company_number') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[number]" value="{{ old('company.number') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Complemento</label>
-                        <input type="text" name="company_complement" value="{{ old('company_complement') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[complement]" value="{{ old('company.complement') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">Site</label>
-                        <input type="text" name="site" value="{{ old('site') }}" class="form-control" placeholder="" />
+                        <input type="text" name="company[site]" value="{{ old('company.site') }}" class="form-control" placeholder="" />
                     </div>
 
                     <div class="form-group">
@@ -178,57 +189,5 @@
 
     </div>
 </div>
-
-@section('js')
-
-<script>
-
-let states = [
-    {'text' : 'AC', 'id' : 1},
-    {'text' : 'AL', 'id' : 2},
-    {'text' : 'AP', 'id' : 3},
-    {'text' : 'AM', 'id' : 4},
-    {'text' : 'BA', 'id' : 5},
-    {'text' : 'CE', 'id' : 6},
-    {'text' : 'DF', 'id' : 7},
-    {'text' : 'ES', 'id' : 8},
-    {'text' : 'GO', 'id' : 9},
-    {'text' : 'MA', 'id' : 10},
-    {'text' : 'MT', 'id' : 11},
-    {'text' : 'MS', 'id' : 12},
-    {'text' : 'MG', 'id' : 13},
-    {'text' : 'PA', 'id' : 14},
-    {'text' : 'PB', 'id' : 15},
-    {'text' : 'PR', 'id' : 16},
-    {'text' : 'PE', 'id' : 17},
-    {'text' : 'PI', 'id' : 18},
-    {'text' : 'RJ', 'id' : 19},
-    {'text' : 'RN', 'id' : 20},
-    {'text' : 'RS', 'id' : 21},
-    {'text' : 'RO', 'id' : 22},
-    {'text' : 'RR', 'id' : 23},
-    {'text' : 'SC', 'id' : 24},
-    {'text' : 'SP', 'id' : 25},
-    {'text' : 'SE', 'id' : 26},
-    {'text' : 'TO', 'id' : 27}
-];
-
-$('#state_id').select2({
-    data: states
-});
-$('#company_state_id').select2({
-    data: states
-});
-
-@if (old('state_id'))
-    $('#state_id').val({{ old('state_id') }}).trigger('change');
-@endif
-
-@if (old('company_state_id'))
-    $('#company_state_id').val({{ old('company_state_id') }}).trigger('change');
-@endif
-</script>
-
-@stop
 
 @endsection

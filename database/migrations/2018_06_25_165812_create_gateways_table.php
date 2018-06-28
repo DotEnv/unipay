@@ -22,10 +22,12 @@ class CreateGatewaysTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('unipay.routes.gateway.name', 'gateways'), function (Blueprint $table) {
+        Schema::create(config('unipay.databases.gateway', 'gateways'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->text('description');
+            $table->string('username', 100)->nullable();
+            $table->string('password', 100)->nullable();
             $table->string('account_id', 70)->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -39,6 +41,6 @@ class CreateGatewaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('unipay.routes.gateway.name', 'gateways'));
+        Schema::dropIfExists(config('unipay.databases.gateway', 'gateways'));
     }
 }
