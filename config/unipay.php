@@ -15,22 +15,17 @@ return [
      * Default route names
      */
     'routes' => [
-
-        'gateway' => [
-            'name' => 'gateways'
-        ],
-    
-        'marchant' => [
-            'name' => 'marchants'
-        ]
+        'gateway' => 'gateways',
+        'seller'  => 'sellers',
     ],
 
     /**
      * Default migrations names
      */
     'databases' => [
-        'gateway'  => 'gateways',
-        'merchant' => 'merchants',
+        'gateway' => 'gateways',
+        'seller'  => 'sellers',
+        'payment' => 'payments',
     ],
 
     /**

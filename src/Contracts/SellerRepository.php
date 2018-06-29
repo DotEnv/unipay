@@ -11,4 +11,4 @@
 
 namespace DotEnv\UniPay\Contracts;
 
-interface MerchantRepository {}
+interface SellerRepository {}

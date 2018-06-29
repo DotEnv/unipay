@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMerchantsTable extends Migration
+class CreateSellersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMerchantsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('unipay.databases.merchant', 'merchants'), function (Blueprint $table) {
+        Schema::create(config('unipay.databases.seller', 'sellers'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name', 100);
             $table->string('last_name', 100);
@@ -35,6 +35,6 @@ class CreateMerchantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('unipay.databases.merchant', 'merchants'));
+        Schema::dropIfExists(config('unipay.databases.seller', 'sellers'));
     }
 }

@@ -16,16 +16,16 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 use Illuminate\Support\Facades\Validator;
-use DotEnv\UniPay\Contracts\MerchantRepository;
+use DotEnv\UniPay\Contracts\SellerRepository;
 use DotEnv\UniPay\Contracts\GatewayRepository;
 use DotEnv\UniPay\Contracts\GatewayWSRepository;
 
-class MerchantController extends Controller
+class SellerController extends Controller
 {
     /**
-     * Merchant repository
+     * Seller repository
      *
-     * @var MerchantRepository
+     * @var SellerRepository
      */
     protected $repository;
 
@@ -46,10 +46,12 @@ class MerchantController extends Controller
     /**
      * Class constructor
      * 
-     * @param MerchantRepository
+     * @param SellerRepository $repository
+     * @param GatewayRepository $gatewayRepository
+     * @param SellerRepoGatewayWSRepositorysitory $gatewayWsRepository
      */
     public function __construct(
-        MerchantRepository $repository,
+        SellerRepository $repository,
         GatewayRepository $gatewayRepository,
         GatewayWSRepository $gatewayWsRepository
         )
@@ -66,11 +68,11 @@ class MerchantController extends Controller
      */
     public function index()
     {
-        $merchants = $this->repository->getAll();
+        $sellers = $this->repository->getAll();
 
         // $this->gatewayWsRepository->getAllSellers();
 
-        return view('unipay::merchants.index', compact('merchants'));
+        return view('unipay::sellers.index', compact('sellers'));
     }
 
     /**
@@ -82,7 +84,7 @@ class MerchantController extends Controller
     {
         $gateways = $this->gatewayRepository->getAll(false, false);
         
-        return view('unipay::merchants.create', compact('gateways'));
+        return view('unipay::sellers.create', compact('gateways'));
     }
 
     /**
@@ -113,7 +115,7 @@ class MerchantController extends Controller
         
         $this->repository->create($request->all());
 
-        return redirect(config('unipay.routes.merchant.name', 'merchants'))->with('created', 'Resource was created sucessfully');
+        return redirect(config('unipay.routes.merchant.name', 'sellers'))->with('created', 'Resource was created sucessfully');
     }
 
     /**
@@ -126,7 +128,7 @@ class MerchantController extends Controller
         $merchant = $this->repository->findByID($id);
         $gateways = $this->gatewayRepository->getAll(false, false);
 
-        return view('unipay::merchants.edit', compact('merchant', 'gateways'));
+        return view('unipay::sellers.edit', compact('merchant', 'gateways'));
     }
     
     /**
@@ -163,7 +165,7 @@ class MerchantController extends Controller
             $seller = $this->gatewayWsRepository->updateSeller($request->all());
         }
 
-        return redirect(config('unipay.routes.merchant.name', 'merchants'))->with('updated', 'Resource was updated sucessfully');       
+        return redirect(config('unipay.routes.merchant.name', 'sellers'))->with('updated', 'Resource was updated sucessfully');       
     }
 
     /**
@@ -174,7 +176,7 @@ class MerchantController extends Controller
      */
     protected function validator(array $data)
     {
-        $tbName    = config('unipay.databases.merchant', 'merchants');
+        $tbName    = config('unipay.databases.merchant', 'sellers');
         $tbGateway = config('unipay.databases.gateway', 'gateways');
 
         $id = isset($data['id']) ? $data['id'] : null;

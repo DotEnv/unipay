@@ -12,11 +12,11 @@
 Route::middleware('web')
     // ->get(config('routes.gateway.name', 'gateways'))
     // ->php arasdauses('DotEnv\UniPay\Controllers\GateweyController@index');
-    ->resource(config('unipay.routes.gateway.name', 'gateways'), 
+    ->resource(config('unipay.routes.gateway', 'gateways'), 
         'DotEnv\UniPay\Controllers\GatewayController'
     )->except('show');
 
 Route::middleware('web')
-    ->resource(config('unipay.routes.merchant.name', 'merchants'), 
+    ->resource(config('unipay.routes.seller', 'sellers'), 
         'DotEnv\UniPay\Controllers\MerchantController'
     )->except('show');

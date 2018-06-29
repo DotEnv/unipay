@@ -21,7 +21,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Vendedores</h3>
                 <div class="pull-right">
-                    <a href="{{ url(config('unipay.route.merchant.name', 'merchants'), 'create') }}" class="btn btn-sm btn-success">Criar novo</a>
+                    <a href="{{ url(config('unipay.route.seller', 'sellers'), 'create') }}" class="btn btn-sm btn-success">Criar novo</a>
                 </div>
             </div>
             
@@ -37,13 +37,13 @@
                             <th style="width: 15%">Action</th>
                         </tr>
                         <tr>
-                            @foreach ($merchants as $merchant)
-                                <td>{{ $merchant->id }}</td>
-                                <td>{{ $merchant->first_name . ' ' . $merchant->last_name }}</td>
-                                <td>{{ $merchant->email }}</td>
-                                <td>{{ $merchant->gateway->name }}</td>
+                            @foreach ($sellers as $seller)
+                                <td>{{ $seller->id }}</td>
+                                <td>{{ $seller->first_name . ' ' . $seller->last_name }}</td>
+                                <td>{{ $seller->email }}</td>
+                                <td>{{ $seller->gateway->name }}</td>
                                 <td>
-                                    <a href="{{ url(config('unipay.routes.merchant.name', 'merchants') . '/'. $merchant->id . '/edit') }}" class="btn btn-primary">
+                                    <a href="{{ url(config('unipay.routes.seller', 'sellers') . '/'. $seller->id . '/edit') }}" class="btn btn-primary">
                                         <i class="fa fa-search"></i>
                                     </a>                                    
                                 </td>

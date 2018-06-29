@@ -24,7 +24,7 @@
                   </div>
                 @endif
 
-                <form method="POST" action="{{ url(config('unipay.route.merchant', 'merchants')) }}">
+                <form method="POST" action="{{ url(config('unipay.route.seller', 'sellers')) }}">
 
                     {!! csrf_field() !!}
 

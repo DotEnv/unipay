@@ -12,11 +12,11 @@
 namespace DotEnv\UniPay\Repositories;
 
 use DotEnv\UniPay\Repositories\BaseRepository;
-use DotEnv\UniPay\Contracts\MerchantRepository as MerchantRepositoryContract;
+use DotEnv\UniPay\Contracts\SellerRepository as SellerRepositoryContract;
 
-use DotEnv\UniPay\Models\Merchant;
+use DotEnv\UniPay\Models\Seller;
 
-class MerchantRepository extends BaseRepository implements MerchantRepositoryContract
+class SellerRepository extends BaseRepository implements SellerRepositoryContract
 {
-    protected $model = Merchant::class;
+    protected $model = Seller::class;
 }

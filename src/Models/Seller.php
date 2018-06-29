@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DotEnv\UniPay\Models\Gateway;
 
-class Merchant extends Model
+class Seller extends Model
 {
     use SoftDeletes;
 
