@@ -18,5 +18,10 @@ Route::middleware('web')
 
 Route::middleware('web')
     ->resource(config('unipay.routes.seller', 'sellers'), 
-        'DotEnv\UniPay\Controllers\MerchantController'
+        'DotEnv\UniPay\Controllers\SellerController'
     )->except('show');
+
+Route::middleware('web')
+    ->resource(config('unipay.routes.payment', 'payments'), 
+        'DotEnv\UniPay\Controllers\PaymentController'
+    )->except('show');    
