@@ -95,10 +95,10 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validator($request->all())->validate();
-
         //ZOOP - type - individual,business
         //MOIP - type - CONSUMER,MERCHANT
+        
+        $this->validator($request->all())->validate();
 
         $request['first_name'] = isset($request['person']['first_name']) ? $request['person']['first_name'] : null;
         $request['last_name']  = isset($request['person']['last_name']) ? $request['person']['last_name'] : null;
@@ -109,10 +109,8 @@ class SellerController extends Controller
             'company' => $request->get('company'),
         ];
 
-        $seller = $this->gatewayWsRepository->createSeller($request->all());
+        $request['reference'] = $this->gatewayWsRepository->createSeller($request->all());
 
-        $request['reference'] = isset($seller['id']) ? $seller['id'] : null;
-        
         $this->repository->create($request->all());
 
         return redirect(config('unipay.routes.merchant.name', 'sellers'))->with('created', 'Resource was created sucessfully');
@@ -125,10 +123,10 @@ class SellerController extends Controller
      */
     public function edit($id)
     {
-        $merchant = $this->repository->findByID($id);
+        $seller = $this->repository->findByID($id);
         $gateways = $this->gatewayRepository->getAll(false, false);
 
-        return view('unipay::sellers.edit', compact('merchant', 'gateways'));
+        return view('unipay::sellers.edit', compact('seller', 'gateways'));
     }
     
     /**
@@ -215,8 +213,7 @@ class SellerController extends Controller
             'company.site'         => 'max:150',
             
             'gateway_id' => 'required|exists:' . $tbGateway . ',id'
-        ];
-        
+        ];        
 
         $data['first_name'] = isset($data['person']['first_name']) ? $data['person']['first_name'] : null;
         $data['last_name']  = isset($data['person']['last_name']) ? $data['person']['last_name'] : null;

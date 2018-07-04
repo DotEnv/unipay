@@ -36,8 +36,9 @@
                             <th>Account Type</th>
                             <th style="width: 15%">Action</th>
                         </tr>
-                        <tr>
-                            @foreach ($sellers as $seller)
+                        @foreach ($sellers as $seller)
+                            <tr>
+                            
                                 <td>{{ $seller->id }}</td>
                                 <td>{{ $seller->first_name . ' ' . $seller->last_name }}</td>
                                 <td>{{ $seller->email }}</td>
@@ -47,9 +48,8 @@
                                         <i class="fa fa-search"></i>
                                     </a>                                    
                                 </td>
-                            @endforeach
-                            
-                        </tr>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 

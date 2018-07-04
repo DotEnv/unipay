@@ -21,7 +21,7 @@
                             <li>{{ $error }}</li>
                         @endforeach
                         </ul>
-                  </div>
+                    </div>
                 @endif
 
                 <form method="POST" action="{{ url(config('unipay.route.seller', 'sellers')) }}">
