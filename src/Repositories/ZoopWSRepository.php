@@ -15,7 +15,8 @@ use DotEnv\UniPay\Contracts\GatewayWSRepository;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use DotEnv\UniPay\Exceptions\UniPayException;
+use GuzzleHttp\Exception\RequestException;
+use DotEnv\UniPay\Exceptions\ZoopException;
 
 class ZoopWSRepository implements GatewayWSRepository
 {
@@ -73,7 +74,7 @@ class ZoopWSRepository implements GatewayWSRepository
     }    
 
     /**
-     * List all merchants
+     * List all sellers
      * 
      * @return
      */
@@ -111,14 +112,14 @@ class ZoopWSRepository implements GatewayWSRepository
         $data = $this->setSellerData($data);
         
         try {
-
+            
             $response = $this->client->post('sellers/businesses', [
                 'form_params' => $data,
                 'auth' => [
                     $this->username, null
                 ]
             ]);
-
+    
             if ($response->getStatusCode() == 201) {
 
                 $result = json_decode($response->getBody(), true);
@@ -128,27 +129,15 @@ class ZoopWSRepository implements GatewayWSRepository
 
             return null;
 
-            // dd($response);
-
-            $result = json_decode($response->getBody(), true);
-
-            if (isset($result['error'])) throw new \Exception($result['error']['message']);
-
-            dd($response, $result);
-            
-
+            // $result = json_decode($response->getBody(), true);
+            // if (isset($result['error'])) throw new \Exception($result['error']['message']);
+            // dd($response, $result);
+        
         } catch (ClientException $e) {
 
-            $message = json_decode($e->getResponse()->getBody(), true);
+            $message = json_decode($e->getResponse()->getBody());
 
-            dd($message, 'ce');
-
-        } catch (ZoopException $e) {
-
-            $message = $e->getMessage();
-
-            dd($message);
-            
+            throw new ZoopException($message->error->message, $e->getResponse()->getStatusCode());
         }
     }
 
@@ -176,16 +165,96 @@ class ZoopWSRepository implements GatewayWSRepository
 
             dd($r);
 
-        } catch (UniPayException $e) {
+        } catch (ZoopException $e) {
 
             dd('update exception ', $e);
         }
-
     }
 
     /**
-     * Set data
+     * Create a split payment
      *
+     * @param array $data
+     * @return void
+     */
+    public function createSplitPayment($data)
+    {
+        $orderData = $this->setOrderData($data);
+        $splitData = $this->setSplitData($data);
+
+        try {
+
+            $response = $this->client->post('cards/tokens', [
+                'form_params' => $orderData,
+                'auth' => [
+                    $this->username, null
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 201) {
+
+                $responseData       = json_decode($response->getBody(), true);
+                $splitData['token'] = $responseData['id'];
+
+                $responseSplit = $this->client->post('transactions', [
+                    'form_params' => $splitData,
+                    'auth' => [
+                        $this->username, null
+                    ]
+                ]);
+
+                if ($responseSplit->getStatusCode() == 201) {
+
+                    $result = json_decode($responseSplit->getBody(), true);
+
+                    return $result['id'];
+                }
+            }
+
+            return null;
+
+            dd($response->getStatusCode());
+
+            $r = json_decode($response->getBody(), true);
+
+            dd($r);
+
+        } catch (ClientException $e) {
+            
+            $message = json_decode($e->getResponse()->getBody());
+
+            throw new ZoopException($message->error->message, $e->getResponse()->getStatusCode());
+        }
+    }
+
+    /**
+     * Create a payment
+     *
+     * @param array $data
+     * @return void
+     */
+    public function createPayment($data)
+    {
+        // $response = $this->client->post('');
+    }
+
+    /**
+     * Create an order
+     *
+     * @param array $data
+     * @return void
+     */
+    private function createOrder($data)
+    {
+
+
+        
+    }
+
+    /**
+     * Set seller data
+     * 
+     * @param array $data
      * @return void
      */
     private function setSellerData($data)
@@ -220,5 +289,52 @@ class ZoopWSRepository implements GatewayWSRepository
             'status'     => 'pending', 
             'created_at' => now()
         ];
+    }
+
+    /**
+     * Set order data
+     *
+     * @param array $data
+     * @return array
+     */
+    private function setOrderData($data)
+    {
+        return [
+            'holder_name'      => $data['holder_name'],
+            'expiration_month' => $data['expiration_month'],
+            'expiration_year'  => $data['expiration_year'],
+            'security_code'    => $data['security_code'],
+            'card_number'      => $data['card_number'],
+        ];
+    }
+
+    /**
+     * Set split data
+     *
+     * @param array  $data
+     * @return array $split
+     */
+    private function setSplitData($data)
+    {
+        $split = [
+            'amount'       => $data['amount'],
+            'currency'     => $data['currency'],
+            'description'  => $data['description'],
+            'payment_type' => $data['payment_type'],
+            'on_behalf_of' => $data['recipient'],
+        ];
+
+        foreach ($data['split'] as $dt)
+        {
+            $split['split_rules'][] = [
+                'amount'                => $dt['amount'],
+                'percentage'            => $dt['percentage'],
+                'liable'                => $dt['chargeback_liable'],
+                'recipient'             => $dt['recipient'],
+                'charge_processing_fee' => $dt['charge_fee'],
+            ];
+        }
+
+        return $split;
     }
 }

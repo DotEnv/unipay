@@ -16,9 +16,11 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 use Illuminate\Support\Facades\Validator;
+use DotEnv\UniPay\Contracts\SellerRepository;
 use DotEnv\UniPay\Contracts\GatewayRepository;
+use DotEnv\UniPay\Contracts\GatewayWSRepository;
 
-class GatewayController extends Controller
+class PaymentController extends Controller
 {
     /**
      * Gateway repository
@@ -28,13 +30,33 @@ class GatewayController extends Controller
     protected $repository;
 
     /**
+     * Seller repository
+     *
+     * @var SellerRepository
+     */
+    protected $sellerRepository;
+
+    /**
+     * Gateway WS repository
+     *
+     * @var GatewayWsRepository
+     */
+    protected $gatewayWsRepository;
+
+    /**
      * Class constructor
      * 
      * @param GatewayRepository
      */
-    public function __construct(GatewayRepository $repository)
+    public function __construct(
+        GatewayRepository $repository,
+        SellerRepository $sellerRepository,
+        GatewayWSRepository $gatewayWsRepository
+        )
     {
-        $this->repository = $repository;
+        $this->repository          = $repository;
+        $this->sellerRepository    = $sellerRepository;
+        $this->gatewayWsRepository = $gatewayWsRepository;
     }
 
     /**
@@ -44,7 +66,36 @@ class GatewayController extends Controller
      */
     public function index()
     {
-        $gateways = $this->repository->getAll();
+       
+        // $gateways = $this->repository->getAll();
+
+        $seller2 = $this->sellerRepository->findByID(2);
+        $seller3 = $this->sellerRepository->findByID(3);
+
+        $data = [
+            'amount'       => 100,
+            'currency'     => 'BRL',
+            'description'  => 'PHP Zoop Payment',
+            'payment_type' => 'credit',
+            'holder_name'      => 'Tiago Perrelli',
+            'expiration_month' => '03',
+            'expiration_year'  => '2020',
+            'security_code'    => '876',
+            'card_number'      => '5577270004286630',
+            'recipient'        => $seller2->reference,
+            'split' => [
+                [
+                    'amount'            => 0,
+                    'percentage'        => 50,
+                    'seller_id'         => 1,
+                    'charge_fee'        => 0,
+                    'chargeback_liable' => 1,
+                    'recipient'         => $seller3->reference
+                ]
+            ]
+        ];
+
+        $this->gatewayWsRepository->createSplitPayment($data);
 
         return view('unipay::gateways.index', compact('gateways'));
     }
@@ -111,11 +162,15 @@ class GatewayController extends Controller
      */
     protected function validator(array $data)
     {
+        $tbName = config('unipay.databases.seller', 'sellers');
+
         $rules = [
-            'name'       => 'required|max:50',
-            'username'   => 'max:100',
-            'password'   => 'max:100',
-            'account_id' => 'max:70'
+            'amount'         => 'required|max:50',
+            'description'    => 'max:100',
+            'currency'       => 'required|max:3',
+            'payment_type'   => 'required|max:20',
+            'transaction_id' => 'required|max:100',
+            'seller_id'      => 'required|exists:' . $tbName . ',id'
         ];
         
         return Validator::make($data, $rules);
