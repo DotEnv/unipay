@@ -18,8 +18,8 @@ use GuzzleHttp\Client;
 use DotEnv\UniPay\Repositories\GatewayRepository;
 use DotEnv\UniPay\Contracts\GatewayRepository as GatewayRepositoryContract;
 
-use DotEnv\UniPay\Repositories\MerchantRepository;
-use DotEnv\UniPay\Contracts\MerchantRepository as MerchantRepositoryContract;
+use DotEnv\UniPay\Repositories\SellerRepository;
+use DotEnv\UniPay\Contracts\SellerRepository as SellerRepositoryContract;
 
 use DotEnv\UniPay\Repositories\ZoopWSRepository;
 use DotEnv\UniPay\Contracts\GatewayWSRepository;
@@ -84,8 +84,8 @@ class UniPayServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            MerchantRepositoryContract::class,
-            MerchantRepository::class
+            SellerRepositoryContract::class,
+            SellerRepository::class
         );
 
         $this->app->bind(GatewayWSRepository::class, function($app) {
