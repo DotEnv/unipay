@@ -11,6 +11,19 @@
 
 namespace DotEnv\UniPay\Exceptions;
 
-use UniPayException;
+use Exception;
+use DotEnv\UniPay\Exceptions\UniPayException;
 
-class ZoopException extends UniPayException {}
+class ZoopException extends UniPayException
+{
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, $exception = null)
+    {
+    }
+}
